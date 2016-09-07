@@ -1,0 +1,3 @@
+class graphTran:
+    def __init__(self, mainNode):
+        self._mainNode
