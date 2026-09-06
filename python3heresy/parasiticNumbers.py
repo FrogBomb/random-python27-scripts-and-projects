@@ -24,7 +24,8 @@ def findParasiticNumbers(multiplier, base = 10):
 if __name__ == "__main__":
     import numpy as np
     print("Parasitic numbers (base numbers - all others can be found by self concatenation of each of these)\n\n")
-    for base in range(2, 17):
+    for base in range(2, 37
+                      ):
         print(f"base-{base} parsitic numbers:")
         for i in range(1, base):
             numbers = findParasiticNumbers(i, base)
