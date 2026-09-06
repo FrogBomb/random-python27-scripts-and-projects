@@ -1,18 +1,25 @@
+import math
 def findParasiticNumbers(multiplier, base = 10):
     if multiplier == 1:
         return [i for i in range(1, base)]
     if (multiplier >= base):
         raise f"Multipler {multiplier} must be less than the base {base}"
     
-    denominator = base * multiplier - 1
-    divmods_of_base_powers = [divmod(base * base, denominator)]
-    # Find the cycle...
-    while((current_power_mod := divmods_of_base_powers[-1][-1]) != base):
-        divmods_of_base_powers.append(divmod(current_power_mod * base, denominator))
+    unreduced_denominator = base * multiplier - 1
+    
+    gcds = {i: math.gcd(i, unreduced_denominator) for i in range(multiplier, base)}
+    unitForGcd = {}
+    for gcd in set(gcds.values()):
+        denominator = unreduced_denominator // gcd
+        divmods_of_base_powers = [divmod(base, denominator)]
+        # Find the cycle...
+        while((current_power_mod := divmods_of_base_powers[-1][-1]) != divmods_of_base_powers[0][-1] or len(divmods_of_base_powers) == 1):
+            divmods_of_base_powers.append(divmod(current_power_mod * base, denominator))
+        divmods_of_base_powers.pop()
+        calcUnit = sum(d*base**i for (i, (d, _)) in enumerate(reversed(divmods_of_base_powers)))
+        unitForGcd[gcd] = calcUnit
 
-    divmods_of_base_powers.insert(0, divmods_of_base_powers.pop())
-    calcUnit = sum(d*base**i for (i, (d, _)) in enumerate(reversed(divmods_of_base_powers)))
-    return [calcUnit * n for n in range(multiplier, base)]
+    return [unitForGcd[gcds[n]]*(n//gcds[n]) for n in range(multiplier, base)]
 
 if __name__ == "__main__":
     import numpy as np
