@@ -14,7 +14,14 @@ def findParasiticNumbers(multiplier, base = 10):
     calcUnit = sum(d*base**i for (i, (d, _)) in enumerate(reversed(divmods_of_base_powers)))
     return [calcUnit * n for n in range(multiplier, base)]
 
-
-for i in range(1, 10):
-    print(f"parsitic-{i} of min length: {findParasiticNumbers(i)}")
+if __name__ == "__main__":
+    import numpy as np
+    print("Parasitic numbers of min length (all others can be found by self concatenation)")
+    for base in range(2, 17):
+        print(f"base-{base} parsitic numbers:")
+        for i in range(1, base):
+            print("\t", end="")
+            print(f"parsitic-{i} base-{base} numbers:")
+            print("\t\t", end="")
+            print(*(np.base_repr(number, base) for number in findParasiticNumbers(i, base)))
     
