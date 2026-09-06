@@ -23,12 +23,15 @@ def findParasiticNumbers(multiplier, base = 10):
 
 if __name__ == "__main__":
     import numpy as np
-    print("Parasitic numbers of min length (all others can be found by self concatenation)")
+    print("Parasitic numbers (base numbers - all others can be found by self concatenation of each of these)\n\n")
     for base in range(2, 17):
         print(f"base-{base} parsitic numbers:")
         for i in range(1, base):
+            numbers = findParasiticNumbers(i, base)
+            min_number = np.base_repr(min(numbers), base)
+
             print("\t", end="")
-            print(f"parsitic-{i} base-{base} numbers:")
+            print(f"parsitic-{i} base-{base} numbers (min: {min_number}, length of min: {len(min_number)}):")
             print("\t\t", end="")
-            print(*(np.base_repr(number, base) for number in findParasiticNumbers(i, base)))
+            print(*(np.base_repr(number, base) for number in numbers))
     
